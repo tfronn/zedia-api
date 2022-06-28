@@ -8,7 +8,7 @@
 
   
 
-<img  alt="Quantidade de linguagens utilizadas"  src="https://img.shields.io/github/languages/count/tfronn/zedia-apicolor=56BEB8">
+<img  alt="Quantidade de linguagens utilizadas"  src="https://img.shields.io/github/languages/count/tfronn/zedia-api?color=56BEB8">
 
   
 
