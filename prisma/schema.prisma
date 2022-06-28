@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  workspaceId Int     @id @default(autoincrement())
+  name        String
+  kind        String
+  description String
+  visits      Visit[]
+
+  @@map("Workspaces")
+}
+
+model Visit {
+  visitId          Int       @id @default(autoincrement())
+  kind             String
+  user             String
+  createdAt        DateTime  @default(now()) @db.Date
+  workspaceVisitId Int
+  Workspace        Workspace @relation(fields: [workspaceVisitId], references: [workspaceId])
+
+  @@map("Visits")
+}
