@@ -10,7 +10,6 @@ servers:
     description: Rota base do servidor
 
 paths:
-
   /workspace:
     post:
       summary: Registra um novo workspace ao DB
