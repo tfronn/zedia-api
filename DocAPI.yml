@@ -1,0 +1,127 @@
+openapi: 3.0.0
+
+info:
+  title: Zedia API
+  description: Servidor com banco de dados relacional para registro e busca de workspaces e visitas.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8008
+    description: Rota base do servidor
+
+paths:
+
+  /workspace:
+    post:
+      summary: Registra um novo workspace ao DB
+      responses:
+        '201':    # status code
+          description: registra um JSON array de workspaces
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  name: string
+                  kind: string
+                  description: string
+        '500':     # status code
+          description: Internal server error
+  
+  /workspaces:
+    get:
+      summary: Retorna uma lista de workspaces cadastrados
+      responses:
+        '200':    # status code
+          description: JSON array de workspaces
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  workspaceId: number
+                  name: string
+                  kind: string
+                  description: string
+        '500':     # status code
+          description: Internal server error
+  
+  /workspace/{workspaceId}:
+    delete:
+      summary: Deleta o workspace selecionado do DB
+      responses:
+        '200':    # status code
+          description: Workspace selecionado deletado
+        '500':     # status code
+          description: Internal server error
+
+  /visits/{workspaceId}:
+    post:
+      summary: Registra uma nova visita ao workspace selecionado
+      responses:
+        '200':    # status code
+          description: registra um JSON array de visita relacionado ao workspace
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  kind: string
+                  user: string
+        '500':     # status code
+          description: Internal server error
+
+  /visits/{workspaceId}:
+    get:
+      summary: Retorna uma lista de visitas ao workspace selecionado, organizado por data
+      responses:
+        '200':    # status code
+          description: JSON array de visitas ao workspace
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  visits: [
+                    {
+                      date: date,
+                      year: number,
+                      month: number,
+                      dayOfWeek: number,
+                      dayOfMonth: number,
+                      visits: {
+                          kind: string,
+                          visitsCount: number
+                      }
+                   }
+                  ]
+        '500':     # status code
+          description: Internal server error
+
+  /visits/{workspaceId}/{Data}: # Data padrão BR (DD-MM-YYYY)
+    get:
+      summary: Retorna uma lista de visitas ao workspace selecionado e data selecionada
+      responses:
+        '200':    # status code
+          description: JSON array de visitas ao workspace por data selecionada
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  visits: [
+                    {
+                      date: date,
+                      year: number,
+                      month: number,
+                      dayOfWeek: number,
+                      dayOfMonth: number,
+                      visits: {
+                          kind: string,
+                          visitsCount: number
+                      }
+                   }
+                  ]
+        '500':     # status code
+          description: Internal server error
+  
