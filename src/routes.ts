@@ -12,11 +12,17 @@ routes.get('/', (req, res) => {
 })
 
 routes.get('/workspaces', async (req, res) => {
+  try {
   const workspaces = await prisma.workspace.findMany();
-  res.json(workspaces)
+  res.status(200).json(workspaces)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
 })
 
 routes.get(`/visits/:id`, async (req, res) => {
+  try {
   const visitsByDate = await prisma.visit.groupBy({
     by: ['createdAt', 'kind', 'workspaceVisitId'],
     where: {
@@ -64,9 +70,14 @@ routes.get(`/visits/:id`, async (req, res) => {
     
   })
   res.status(200).json(formattedVisitsByDate).send()
+ } catch (err) {
+  console.log(err)
+  res.status(500).json(err)
+ }
 })
 
 routes.get(`/visits/:id/:data`, async (req, res) => {
+  try {
   const params = req.params.data
   const paramsFormat = params.replace(/-/g, "/").split("/")
   const paramsToDate = new Date(Date.UTC(+paramsFormat[2], +paramsFormat[1] - 1, +paramsFormat[0] + 1))
@@ -112,10 +123,13 @@ routes.get(`/visits/:id/:data`, async (req, res) => {
       }]
     }
     return visits
-    
-  })
-  console.log(paramsToDate)
-  res.status(200).json(formattedVisitsByDate).send()
+})
+    console.log(paramsToDate)
+    res.status(200).json(formattedVisitsByDate).send()
+  } catch (err) {
+  console.log(err)
+  res.status(500).json(err)
+ }
 })
 
 routes.post('/workspace', async (req, res) => {
